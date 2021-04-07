@@ -47,20 +47,21 @@ class ComposableImage(val bytes: Array[Byte]){
 }
 
 object ImageUtils{
-  def visualCompare( percentage: Float = 99)(img1: ComposableImage, img2: ComposableImage): Boolean = {
-    val radialDistance = for{
+  def visualCompare( percentage: Double = 99.99)(img1: ComposableImage, img2: ComposableImage): Boolean = {
+    val imageSimilarity = for{
       img1 <- radialHash(ImageIO.read(new ByteArrayInputStream(img1.bytes)))
       img2 <- radialHash(ImageIO.read(new ByteArrayInputStream(img2.bytes)))
     }yield{
       radialHashDistance(img1,img2)
     }
 
-    radialDistance.map {
-      case distance if distance > (percentage/100) =>
+    imageSimilarity match{
+      case Right(d) if(d > percentage/100 )=>
         true
       case _ =>
         false
-    }.getOrElse(false)
+    }
+
   }
 
 }

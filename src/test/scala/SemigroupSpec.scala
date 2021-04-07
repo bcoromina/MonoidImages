@@ -9,7 +9,7 @@ class SemigroupSpec extends org.scalatest.funspec.FixtureAnyFunSpec{
     val c = FileImageUtils.resourceAsComposableImage("poligonsEtiFromJson.png")
 
     implicit val s = MonoidInstances.insComposableImage
-    SemigroupLaws.associativity(a,b,c, ImageUtils.visualCompare(99))
+    assert( SemigroupLaws.associativity(a,b,c, ImageUtils.visualCompare()) )
   }
 
 
