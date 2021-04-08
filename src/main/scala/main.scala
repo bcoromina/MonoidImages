@@ -1,14 +1,13 @@
 import scalaphash.PHash.{radialHash, radialHashDistance}
 
-import java.awt.{Color, Graphics2D, Image, Rectangle}
 import java.awt.image.BufferedImage
 import java.io.{ByteArrayInputStream, ByteArrayOutputStream}
 import javax.imageio.ImageIO
+import scala.collection.parallel.CollectionConverters.IterableIsParallelizable
 
 
 object MoniodSandBox {
   def main(args: Array[String]): Unit = {
-    import MonoidInstances._
     import MonoidSyntax._
     val imageA = new ComposableImage(Array.empty)
     val imageB = new ComposableImage(Array.empty)
@@ -37,7 +36,7 @@ object Monoid{
   def apply[A](implicit a: Monoid[A]): Monoid[A] = a
 
   def combineAll[A :Monoid](elements: Seq[A]): A =
-      elements.foldLeft(Monoid[A].empty)(Monoid[A].combine)
+      elements.par.foldLeft(Monoid[A].empty)(Monoid[A].combine)
 
 }
 
